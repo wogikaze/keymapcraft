@@ -14,6 +14,11 @@ interface KeyboardState {
     dragPreviewPosition: { x: number; y: number } | null;
     isDirectInputEnabled: boolean;
 
+    // Resize state
+    isResizing: boolean;
+    resizingKeyId: string | null;
+    resizeDirection: 'right' | 'bottom' | 'corner' | null;
+
     // Export modal state
     isExportModalOpen: boolean;
     exportSettings: {
@@ -32,6 +37,10 @@ interface KeyboardState {
     updateKeySize: (keyId: string, size: { width: number; height: number }) => void;
     setDragging: (isDragging: boolean, keyId?: string) => void;
     setDragPreviewPosition: (position: { x: number; y: number } | null) => void;
+
+    // Resize actions
+    setResizing: (isResizing: boolean, keyId?: string, direction?: 'right' | 'bottom' | 'corner') => void;
+
     duplicateKey: (keyId: string) => void;
     deleteKey: (keyId: string) => void;
     setDirectInputEnabled: (enabled: boolean) => void;
@@ -52,6 +61,11 @@ export const useKeyboardStore = create<KeyboardState>((set, get) => ({
     draggedKeyId: null,
     dragPreviewPosition: null,
     isDirectInputEnabled: true,
+
+    // Resize state
+    isResizing: false,
+    resizingKeyId: null,
+    resizeDirection: null,
 
     // Export modal state
     isExportModalOpen: false,
@@ -158,6 +172,12 @@ export const useKeyboardStore = create<KeyboardState>((set, get) => ({
     }),
 
     setDragPreviewPosition: (position) => set({ dragPreviewPosition: position }),
+
+    setResizing: (isResizing, keyId, direction) => set({
+        isResizing,
+        resizingKeyId: keyId || null,
+        resizeDirection: direction || null
+    }),
 
     duplicateKey: (keyId) => set((state) => {
         if (!state.currentLayout) return state;

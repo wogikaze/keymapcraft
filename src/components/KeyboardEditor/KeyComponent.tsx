@@ -9,14 +9,24 @@ interface KeyComponentProps {
 }
 
 const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
-    const { selectedKeyId, selectKey, currentLayer, updateKeyPosition, setDragging } =
-        useKeyboardStore();
+    const {
+        selectedKeyId,
+        selectKey,
+        currentLayer,
+        updateKeyPosition,
+        updateKeySize,
+        setDragging,
+        setResizing,
+        isResizing,
+        resizingKeyId,
+    } = useKeyboardStore();
     const isSelected = selectedKeyId === keyDef.id;
 
-    // ドラッグ機能
+    // ドラッグ機能（リサイズ中は無効化）
     const [{ isDragging }, drag] = useDrag(
         () => ({
             type: "key",
+            canDrag: () => !isResizing && resizingKeyId !== keyDef.id,
             item: () => {
                 setDragging(true, keyDef.id);
                 return { id: keyDef.id, originalPosition: keyDef.position };
@@ -32,7 +42,7 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
                 }
             },
         }),
-        [keyDef.id, keyDef.position, setDragging, updateKeyPosition]
+        [keyDef.id, keyDef.position, setDragging, updateKeyPosition, isResizing, resizingKeyId]
     );
 
     // アニメーション
@@ -46,6 +56,48 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         selectKey(keyDef.id);
+    };
+
+    // リサイズハンドルのマウスダウンイベント
+    const handleResizeMouseDown = (
+        e: React.MouseEvent,
+        direction: "right" | "bottom" | "corner"
+    ) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setResizing(true, keyDef.id, direction);
+
+        const startX = e.clientX;
+        const startY = e.clientY;
+        const startWidth = keyDef.size.width;
+        const startHeight = keyDef.size.height;
+
+        const handleMouseMove = (moveEvent: MouseEvent) => {
+            const deltaX = (moveEvent.clientX - startX) / 50; // 50px = 1u
+            const deltaY = (moveEvent.clientY - startY) / 50;
+
+            let newWidth = startWidth;
+            let newHeight = startHeight;
+
+            if (direction === "right" || direction === "corner") {
+                newWidth = Math.max(0.5, Math.round((startWidth + deltaX) * 4) / 4); // 0.25u刻み
+            }
+            if (direction === "bottom" || direction === "corner") {
+                newHeight = Math.max(0.5, Math.round((startHeight + deltaY) * 4) / 4); // 0.25u刻み
+            }
+
+            updateKeySize(keyDef.id, { width: newWidth, height: newHeight });
+        };
+
+        const handleMouseUp = () => {
+            setResizing(false);
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+        };
+
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
     };
 
     // キーサイズをピクセルに変換（1u = 50px）
@@ -124,6 +176,32 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
             <div className={`text-white leading-none ${getShiftLegend() ? "" : "text-center"}`}>
                 {getCurrentLegend()}
             </div>
+
+            {/* リサイズハンドル（選択されたキーのみ表示） */}
+            {isSelected && !isDragging && (
+                <>
+                    {/* 右端リサイズハンドル */}
+                    <div
+                        className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize bg-blue-500/30 hover:bg-blue-500/50 transition-colors"
+                        style={{ right: "-4px" }}
+                        onMouseDown={(e) => handleResizeMouseDown(e, "right")}
+                    />
+
+                    {/* 下端リサイズハンドル */}
+                    <div
+                        className="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize bg-blue-500/30 hover:bg-blue-500/50 transition-colors"
+                        style={{ bottom: "-4px" }}
+                        onMouseDown={(e) => handleResizeMouseDown(e, "bottom")}
+                    />
+
+                    {/* 右下角リサイズハンドル */}
+                    <div
+                        className="absolute bottom-0 right-0 w-3 h-3 cursor-nwse-resize bg-blue-500/50 hover:bg-blue-500/70 transition-colors rounded-tl"
+                        style={{ bottom: "-4px", right: "-4px" }}
+                        onMouseDown={(e) => handleResizeMouseDown(e, "corner")}
+                    />
+                </>
+            )}
         </animated.div>
     );
 };
