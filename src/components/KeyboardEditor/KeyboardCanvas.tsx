@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useDrop } from "react-dnd";
 import { useKeyboardStore } from "../../stores/keyboardStore";
 import KeyComponent from "./KeyComponent";
+import type { KeyDefinition } from "../../types/keyboard";
 
 const KeyboardCanvas: React.FC = () => {
     const {
@@ -152,6 +153,33 @@ const KeyboardCanvas: React.FC = () => {
         document.addEventListener("mouseup", handleGlobalMouseUp);
     };
 
+    // --- 重なり検出 ---
+    // 1u = 50px
+    const getRect = (key: KeyDefinition) => ({
+        left: key.position.x * 50,
+        top: key.position.y * 50,
+        right: (key.position.x + key.size.width) * 50,
+        bottom: (key.position.y + key.size.height) * 50,
+    });
+    const overlappingKeyIds = new Set<string>();
+    for (let i = 0; i < currentLayout.keys.length; i++) {
+        const keyA = currentLayout.keys[i];
+        const rectA = getRect(keyA);
+        for (let j = i + 1; j < currentLayout.keys.length; j++) {
+            const keyB = currentLayout.keys[j];
+            const rectB = getRect(keyB);
+            if (
+                rectA.left < rectB.right &&
+                rectA.right > rectB.left &&
+                rectA.top < rectB.bottom &&
+                rectA.bottom > rectB.top
+            ) {
+                overlappingKeyIds.add(keyA.id);
+                overlappingKeyIds.add(keyB.id);
+            }
+        }
+    }
+
     return (
         <div className="w-full p-8">
             <div className="mb-4">
@@ -188,7 +216,11 @@ const KeyboardCanvas: React.FC = () => {
                 />
 
                 {currentLayout.keys.map((keyDef) => (
-                    <KeyComponent key={keyDef.id} keyDef={keyDef} />
+                    <KeyComponent
+                        key={keyDef.id}
+                        keyDef={keyDef}
+                        isOverlapping={overlappingKeyIds.has(keyDef.id)}
+                    />
                 ))}
 
                 {/* ドラッグプレビューキー */}
@@ -323,7 +355,7 @@ const KeyboardCanvas: React.FC = () => {
             </div>
 
             <div className="mt-4 text-sm text-gray-400">
-                キー数: {currentLayout.metadata.keyCount} | タイプ:{" "}
+                キー数: {currentLayout.keys.length} | タイプ:{" "}
                 {currentLayout.metadata.layoutType} | 地域: {currentLayout.metadata.region}
             </div>
         </div>

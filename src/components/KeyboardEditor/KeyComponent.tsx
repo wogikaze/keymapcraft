@@ -6,9 +6,10 @@ import { useKeyboardStore } from "../../stores/keyboardStore";
 
 interface KeyComponentProps {
     keyDef: KeyDefinition;
+    isOverlapping?: boolean;
 }
 
-const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
+const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef, isOverlapping }) => {
     const {
         selectedKeyId,
         selectedKeyIds,
@@ -21,7 +22,7 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
         setDragging,
         setResizing,
         isResizing,
-        resizingKeyId 
+        resizingKeyId,
     } = useKeyboardStore();
     const isSelected = selectedKeyId === keyDef.id;
     const isMultiSelected = selectedKeyIds.includes(keyDef.id);
@@ -204,6 +205,7 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
                 key-component absolute rounded-lg border-2 cursor-pointer transition-colors duration-200
                 flex flex-col items-center justify-center p-1 text-sm font-medium select-none
                 ${getLayerColor()}
+                ${isOverlapping ? "border-red-500 bg-red-900/60" : ""}
                 ${isDragging ? "z-50" : "z-10"}
             `}
             style={{
