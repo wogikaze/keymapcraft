@@ -2,7 +2,7 @@ import type { KeyboardLayout } from '../../types/keyboard';
 
 // US配列のレイアウトデータ（wogikazeキーボード用）
 export const usLayout: KeyboardLayout = {
-    id: 'us-wogikaze',
+    id: 'us-wogikaze_1751441973214',
     name: 'US Wogikaze配列',
     description: 'US ANSI compact keyboard layout for Wogikaze (F1-F12キー列なし)',
     keys: [
@@ -36,7 +36,7 @@ export const usLayout: KeyboardLayout = {
         { id: 'p', position: { x: 10.5, y: 1 }, size: { width: 1, height: 1 }, keycode: 'KeyP', legends: { normal: 'p', shift: 'P' } },
         { id: 'bracket_left', position: { x: 11.5, y: 1 }, size: { width: 1, height: 1 }, keycode: 'BracketLeft', legends: { normal: '[', shift: '{' } },
         { id: 'bracket_right', position: { x: 12.5, y: 1 }, size: { width: 1, height: 1 }, keycode: 'BracketRight', legends: { normal: ']', shift: '}' } },
-        { id: 'backslash', position: { x: 13.5, y: 1 }, size: { width: 1, height: 1 }, keycode: 'Backslash', legends: { normal: '\\', shift: '|' } },
+        { id: 'backslash', position: { x: 13.5, y: 1 }, size: { width: 1.5, height: 1 }, keycode: 'Backslash', legends: { normal: '\\', shift: '|' } },
 
         // 第3行: CapsLock行
         { id: 'caps', position: { x: 0, y: 2 }, size: { width: 1.75, height: 1 }, keycode: 'CapsLock', legends: { normal: 'Caps', shift: 'Caps' } },
@@ -51,7 +51,7 @@ export const usLayout: KeyboardLayout = {
         { id: 'l', position: { x: 9.75, y: 2 }, size: { width: 1, height: 1 }, keycode: 'KeyL', legends: { normal: 'l', shift: 'L' } },
         { id: 'semicolon', position: { x: 10.75, y: 2 }, size: { width: 1, height: 1 }, keycode: 'Semicolon', legends: { normal: ';', shift: ':' } },
         { id: 'quote', position: { x: 11.75, y: 2 }, size: { width: 1, height: 1 }, keycode: 'Quote', legends: { normal: '\'', shift: '"' } },
-        { id: 'enter', position: { x: 12.75, y: 2 }, size: { width: 1.25, height: 1 }, keycode: 'Enter', legends: { normal: 'Enter', shift: 'Enter' } },
+        { id: 'enter', position: { x: 12.75, y: 2 }, size: { width: 2.25, height: 1 }, keycode: 'Enter', legends: { normal: 'Enter', shift: 'Enter' } },
 
         // 第4行: Shift行
         { id: 'shift_left', position: { x: 0, y: 3 }, size: { width: 2.25, height: 1 }, keycode: 'ShiftLeft', legends: { normal: 'Shift', shift: 'Shift' } },
@@ -65,7 +65,7 @@ export const usLayout: KeyboardLayout = {
         { id: 'comma', position: { x: 9.25, y: 3 }, size: { width: 1, height: 1 }, keycode: 'Comma', legends: { normal: ',', shift: '<' } },
         { id: 'period', position: { x: 10.25, y: 3 }, size: { width: 1, height: 1 }, keycode: 'Period', legends: { normal: '.', shift: '>' } },
         { id: 'slash', position: { x: 11.25, y: 3 }, size: { width: 1, height: 1 }, keycode: 'Slash', legends: { normal: '/', shift: '?' } },
-        { id: 'shift_right', position: { x: 12.25, y: 3 }, size: { width: 1.75, height: 1 }, keycode: 'ShiftRight', legends: { normal: 'Shift', shift: 'Shift' } },
+        { id: 'shift_right', position: { x: 12.25, y: 3 }, size: { width: 2.75, height: 1 }, keycode: 'ShiftRight', legends: { normal: 'Shift', shift: 'Shift' } },
 
         // 第5行: スペース行
         { id: 'ctrl_left', position: { x: 0, y: 4 }, size: { width: 1.25, height: 1 }, keycode: 'ControlLeft', legends: { normal: 'Ctrl', shift: 'Ctrl' } },
@@ -85,6 +85,6 @@ export const usLayout: KeyboardLayout = {
         author: 'Wogikaze',
         tags: ['US', 'ANSI', 'Compact', 'Wogikaze']
     },
-    createdAt: new Date(),
-    updatedAt: new Date()
+    createdAt: new Date("2025-07-02T07:23:36.216Z").toISOString(),
+    updatedAt: new Date("2025-07-02T07:40:44.396Z").toISOString()
 };

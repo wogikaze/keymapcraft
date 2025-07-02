@@ -31,6 +31,6 @@ export interface KeyboardLayout {
     description?: string;
     keys: KeyDefinition[];
     metadata: LayoutMetadata;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
