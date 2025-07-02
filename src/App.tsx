@@ -12,7 +12,14 @@ import { importFromURL } from "./utils/exportUtils";
 import { useEffect } from "react";
 
 function App() {
-    const { currentLayout, setCurrentLayout } = useKeyboardStore();
+    const {
+        currentLayout,
+        setCurrentLayout,
+        selectedKeyId,
+        handleDirectInput,
+        selectKey,
+        setDirectInputEnabled,
+    } = useKeyboardStore();
 
     // URL共有からのレイアウト読み込み
     useEffect(() => {
@@ -23,6 +30,55 @@ function App() {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }, [setCurrentLayout]);
+
+    // グローバルキーボードイベントハンドラー
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // inputやtextareaにフォーカスがある場合は何もしない
+            const activeElement = document.activeElement;
+            if (
+                activeElement &&
+                (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA")
+            ) {
+                return;
+            }
+
+            // ESCキーで選択解除
+            if (e.key === "Escape") {
+                selectKey(null);
+                return;
+            }
+
+            // キーが選択されている場合のダイレクト入力
+            if (selectedKeyId && e.key.length === 1) {
+                e.preventDefault();
+                handleDirectInput(e.key, e.shiftKey);
+            }
+        };
+
+        // input要素のフォーカス状態を監視
+        const handleFocusIn = (e: FocusEvent) => {
+            if (e.target && (e.target as HTMLElement).tagName === "INPUT") {
+                setDirectInputEnabled(false);
+            }
+        };
+
+        const handleFocusOut = (e: FocusEvent) => {
+            if (e.target && (e.target as HTMLElement).tagName === "INPUT") {
+                setDirectInputEnabled(true);
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("focusin", handleFocusIn);
+        document.addEventListener("focusout", handleFocusOut);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+            document.removeEventListener("focusin", handleFocusIn);
+            document.removeEventListener("focusout", handleFocusOut);
+        };
+    }, [selectedKeyId, handleDirectInput, selectKey, setDirectInputEnabled]);
 
     return (
         <DndProvider backend={HTML5Backend}>

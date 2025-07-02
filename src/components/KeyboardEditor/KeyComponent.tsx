@@ -67,10 +67,33 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
     };
 
     const getShiftLegend = () => {
+        // 通常レイヤーでのみShift文字を表示
         if (currentLayer === "normal" && keyDef.legends.shift !== keyDef.legends.normal) {
             return keyDef.legends.shift;
         }
         return null;
+    };
+
+    // レイヤーごとの色を取得
+    const getLayerColor = () => {
+        switch (currentLayer) {
+            case "shift":
+                return isSelected
+                    ? "border-yellow-400 bg-yellow-900/50"
+                    : "border-yellow-600 bg-yellow-800/30 hover:bg-yellow-700/50";
+            case "fn":
+                return isSelected
+                    ? "border-green-400 bg-green-900/50"
+                    : "border-green-600 bg-green-800/30 hover:bg-green-700/50";
+            case "altgr":
+                return isSelected
+                    ? "border-purple-400 bg-purple-900/50"
+                    : "border-purple-600 bg-purple-800/30 hover:bg-purple-700/50";
+            default:
+                return isSelected
+                    ? "border-blue-400 bg-blue-900/50"
+                    : "border-gray-600 bg-gray-800 hover:bg-gray-700 hover:border-gray-500";
+        }
     };
 
     return (
@@ -78,13 +101,9 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ref={drag as any}
             className={`
-                absolute rounded-lg border-2 cursor-pointer transition-colors duration-200
+                key-component absolute rounded-lg border-2 cursor-pointer transition-colors duration-200
                 flex flex-col items-center justify-center p-1 text-sm font-medium select-none
-                ${
-                    isSelected
-                        ? "border-blue-400 bg-blue-900/50"
-                        : "border-gray-600 bg-gray-800 hover:bg-gray-700 hover:border-gray-500"
-                }
+                ${getLayerColor()}
                 ${isDragging ? "z-50" : "z-10"}
             `}
             style={{
@@ -105,13 +124,6 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
             <div className={`text-white leading-none ${getShiftLegend() ? "" : "text-center"}`}>
                 {getCurrentLegend()}
             </div>
-
-            {/* レイヤーインジケーター */}
-            {currentLayer !== "normal" && (
-                <div className="absolute top-1 right-1 text-xs text-blue-400">
-                    {currentLayer.toUpperCase()}
-                </div>
-            )}
         </animated.div>
     );
 };

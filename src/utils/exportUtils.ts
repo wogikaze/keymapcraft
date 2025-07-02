@@ -1,17 +1,17 @@
 import type { KeyboardLayout } from '../types/keyboard';
 
-export const exportToJSON = (layout: KeyboardLayout): void => {
+export const exportToJSON = (layout: KeyboardLayout, fileName?: string): void => {
     const json = JSON.stringify(layout, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${layout.name || 'keyboard'}.json`;
+    a.download = `${fileName || layout.name || 'keyboard'}.json`;
     a.click();
     URL.revokeObjectURL(url);
 };
 
-export const exportToPNG = async (layout: KeyboardLayout): Promise<void> => {
+export const exportToPNG = async (layout: KeyboardLayout, fileName?: string): Promise<void> => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Canvas context not available');
@@ -80,7 +80,7 @@ export const exportToPNG = async (layout: KeyboardLayout): Promise<void> => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${layout.name || 'keyboard'}.png`;
+            a.download = `${fileName || layout.name || 'keyboard'}.png`;
             a.click();
             URL.revokeObjectURL(url);
         }

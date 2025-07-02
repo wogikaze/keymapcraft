@@ -1,255 +1,15 @@
 import type { KeyboardLayout } from "../../types/keyboard";
 
-export const jisFullLayout: KeyboardLayout = {
-    "id": "jis-full",
-    "name": "JIS フル配列",
-    "description": "Japanese JIS full keyboard layout with F-keys",
+export const jisCompactLayout: KeyboardLayout = {
+    "id": "jis-compact",
+    "name": "JIS Compact配列",
+    "description": "Japanese JIS compact keyboard layout without F-keys",
     "keys": [
-        {
-            "id": "esc",
-            "position": {
-                "x": 0,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "Escape",
-            "legends": {
-                "normal": "Esc",
-                "shift": "Esc"
-            }
-        },
-        {
-            "id": "f1",
-            "position": {
-                "x": 2,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F1",
-            "legends": {
-                "normal": "F1",
-                "shift": "F1"
-            }
-        },
-        {
-            "id": "f2",
-            "position": {
-                "x": 3,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F2",
-            "legends": {
-                "normal": "F2",
-                "shift": "F2"
-            }
-        },
-        {
-            "id": "f3",
-            "position": {
-                "x": 4,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F3",
-            "legends": {
-                "normal": "F3",
-                "shift": "F3"
-            }
-        },
-        {
-            "id": "f4",
-            "position": {
-                "x": 5,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F4",
-            "legends": {
-                "normal": "F4",
-                "shift": "F4"
-            }
-        },
-        {
-            "id": "f5",
-            "position": {
-                "x": 6.5,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F5",
-            "legends": {
-                "normal": "F5",
-                "shift": "F5"
-            }
-        },
-        {
-            "id": "f6",
-            "position": {
-                "x": 7.5,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F6",
-            "legends": {
-                "normal": "F6",
-                "shift": "F6"
-            }
-        },
-        {
-            "id": "f7",
-            "position": {
-                "x": 8.5,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F7",
-            "legends": {
-                "normal": "F7",
-                "shift": "F7"
-            }
-        },
-        {
-            "id": "f8",
-            "position": {
-                "x": 9.5,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F8",
-            "legends": {
-                "normal": "F8",
-                "shift": "F8"
-            }
-        },
-        {
-            "id": "f9",
-            "position": {
-                "x": 11,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F9",
-            "legends": {
-                "normal": "F9",
-                "shift": "F9"
-            }
-        },
-        {
-            "id": "f10",
-            "position": {
-                "x": 12,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F10",
-            "legends": {
-                "normal": "F10",
-                "shift": "F10"
-            }
-        },
-        {
-            "id": "f11",
-            "position": {
-                "x": 13,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F11",
-            "legends": {
-                "normal": "F11",
-                "shift": "F11"
-            }
-        },
-        {
-            "id": "f12",
-            "position": {
-                "x": 14,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "F12",
-            "legends": {
-                "normal": "F12",
-                "shift": "F12"
-            }
-        },
-        {
-            "id": "backslash_top",
-            "position": {
-                "x": 13,
-                "y": 1.5
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "IntlRo",
-            "legends": {
-                "normal": "\\",
-                "shift": "_"
-            }
-        },
-        {
-            "id": "delete",
-            "position": {
-                "x": 15,
-                "y": 0
-            },
-            "size": {
-                "width": 1,
-                "height": 1
-            },
-            "keycode": "Delete",
-            "legends": {
-                "normal": "Del",
-                "shift": "Del"
-            }
-        },
         {
             "id": "hankaku_zenkaku",
             "position": {
                 "x": 0,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -265,7 +25,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key1",
             "position": {
                 "x": 1,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -281,7 +41,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key2",
             "position": {
                 "x": 2,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -297,7 +57,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key3",
             "position": {
                 "x": 3,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -313,7 +73,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key4",
             "position": {
                 "x": 4,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -329,7 +89,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key5",
             "position": {
                 "x": 5,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -345,7 +105,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key6",
             "position": {
                 "x": 6,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -361,7 +121,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key7",
             "position": {
                 "x": 7,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -377,7 +137,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key8",
             "position": {
                 "x": 8,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -393,7 +153,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key9",
             "position": {
                 "x": 9,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -409,7 +169,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "key0",
             "position": {
                 "x": 10,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -425,7 +185,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "minus",
             "position": {
                 "x": 11,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -441,7 +201,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "caret",
             "position": {
                 "x": 12,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -454,10 +214,26 @@ export const jisFullLayout: KeyboardLayout = {
             }
         },
         {
+            "id": "backslash_top",
+            "position": {
+                "x": 13,
+                "y": 0
+            },
+            "size": {
+                "width": 1,
+                "height": 1
+            },
+            "keycode": "IntlRo",
+            "legends": {
+                "normal": "\\",
+                "shift": "_"
+            }
+        },
+        {
             "id": "backspace",
             "position": {
                 "x": 14,
-                "y": 1.5
+                "y": 0
             },
             "size": {
                 "width": 1,
@@ -473,7 +249,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "tab",
             "position": {
                 "x": 0,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1.5,
@@ -489,7 +265,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "q",
             "position": {
                 "x": 1.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -505,7 +281,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "w",
             "position": {
                 "x": 2.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -521,7 +297,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "e",
             "position": {
                 "x": 3.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -537,7 +313,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "r",
             "position": {
                 "x": 4.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -553,7 +329,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "t",
             "position": {
                 "x": 5.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -569,7 +345,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "y",
             "position": {
                 "x": 6.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -585,7 +361,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "u",
             "position": {
                 "x": 7.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -601,7 +377,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "i",
             "position": {
                 "x": 8.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -617,7 +393,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "o",
             "position": {
                 "x": 9.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -633,7 +409,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "p",
             "position": {
                 "x": 10.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -649,7 +425,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "at",
             "position": {
                 "x": 11.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -665,7 +441,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "bracket_left",
             "position": {
                 "x": 12.5,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1,
@@ -681,7 +457,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "enter",
             "position": {
                 "x": 13.75,
-                "y": 2.5
+                "y": 1
             },
             "size": {
                 "width": 1.25,
@@ -697,7 +473,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "caps",
             "position": {
                 "x": 0,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1.75,
@@ -713,7 +489,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "a",
             "position": {
                 "x": 1.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -729,7 +505,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "s",
             "position": {
                 "x": 2.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -745,7 +521,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "d",
             "position": {
                 "x": 3.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -761,7 +537,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "f",
             "position": {
                 "x": 4.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -777,7 +553,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "g",
             "position": {
                 "x": 5.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -793,7 +569,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "h",
             "position": {
                 "x": 6.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -809,7 +585,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "j",
             "position": {
                 "x": 7.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -825,7 +601,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "k",
             "position": {
                 "x": 8.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -841,7 +617,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "l",
             "position": {
                 "x": 9.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -857,7 +633,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "semicolon",
             "position": {
                 "x": 10.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -873,7 +649,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "colon",
             "position": {
                 "x": 11.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -889,7 +665,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "bracket_right",
             "position": {
                 "x": 12.75,
-                "y": 3.5
+                "y": 2
             },
             "size": {
                 "width": 1,
@@ -905,7 +681,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "shift_left",
             "position": {
                 "x": 0,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 2.25,
@@ -921,7 +697,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "z",
             "position": {
                 "x": 2.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -937,7 +713,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "x",
             "position": {
                 "x": 3.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -953,7 +729,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "c",
             "position": {
                 "x": 4.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -969,7 +745,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "v",
             "position": {
                 "x": 5.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -985,7 +761,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "b",
             "position": {
                 "x": 6.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -1001,7 +777,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "n",
             "position": {
                 "x": 7.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -1017,7 +793,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "m",
             "position": {
                 "x": 8.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -1033,7 +809,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "comma",
             "position": {
                 "x": 9.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -1049,7 +825,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "period",
             "position": {
                 "x": 10.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -1065,7 +841,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "slash",
             "position": {
                 "x": 11.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -1081,7 +857,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "backslash_jis",
             "position": {
                 "x": 12.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1,
@@ -1097,7 +873,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "shift_right",
             "position": {
                 "x": 13.25,
-                "y": 4.5
+                "y": 3
             },
             "size": {
                 "width": 1.75,
@@ -1113,7 +889,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "ctrl_left",
             "position": {
                 "x": 0,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1.5,
@@ -1129,7 +905,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "fn",
             "position": {
                 "x": 1.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1145,7 +921,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "win_left",
             "position": {
                 "x": 2.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1161,7 +937,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "alt_left",
             "position": {
                 "x": 3.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1177,7 +953,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "muhenkan",
             "position": {
                 "x": 4.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1193,7 +969,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "space",
             "position": {
                 "x": 5.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 4,
@@ -1209,7 +985,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "henkan",
             "position": {
                 "x": 9.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1225,7 +1001,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "katakana",
             "position": {
                 "x": 10.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1241,7 +1017,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "alt_right",
             "position": {
                 "x": 11.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1257,7 +1033,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "menu",
             "position": {
                 "x": 12.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1,
@@ -1273,7 +1049,7 @@ export const jisFullLayout: KeyboardLayout = {
             "id": "ctrl_right",
             "position": {
                 "x": 13.5,
-                "y": 5.5
+                "y": 4
             },
             "size": {
                 "width": 1.5,
@@ -1290,15 +1066,15 @@ export const jisFullLayout: KeyboardLayout = {
         "language": "ja",
         "region": "JP",
         "layoutType": "JIS",
-        "keyCount": 79,
+        "keyCount": 66,
         "author": "User",
         "tags": [
             "JIS",
             "Japanese",
-            "Full-size",
-            "F-keys"
+            "Compact",
+            "No-F-keys"
         ]
     },
-    "createdAt": "2025-07-02T07:23:36.214Z",
-    "updatedAt": "2025-07-02T08:40:03.689Z"
+    "createdAt": "2025-07-02T08:45:00.000Z",
+    "updatedAt": "2025-07-02T08:45:00.000Z"
 };

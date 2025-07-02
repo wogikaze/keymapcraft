@@ -1,6 +1,6 @@
 import React from "react";
 import { useKeyboardStore } from "../../stores/keyboardStore";
-import { exportToJSON, exportToPNG, exportToURL } from "../../utils/exportUtils";
+import ExportModal from "../UI/ExportModal";
 
 const Toolbar: React.FC = () => {
     const {
@@ -11,6 +11,9 @@ const Toolbar: React.FC = () => {
         deleteKey,
         currentLayout,
         setCurrentLayout,
+        isExportModalOpen,
+        openExportModal,
+        closeExportModal,
     } = useKeyboardStore();
 
     const layers = [
@@ -122,43 +125,18 @@ const Toolbar: React.FC = () => {
                         🔄 リセット
                     </button>
 
-                    {/* JSONエクスポート */}
+                    {/* 共有・エクスポート */}
                     <button
-                        onClick={() => currentLayout && exportToJSON(currentLayout)}
-                        className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
-                    >
-                        💾 JSON
-                    </button>
-
-                    {/* 画像エクスポート */}
-                    <button
-                        onClick={() => currentLayout && exportToPNG(currentLayout)}
-                        className="px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
-                    >
-                        🖼️ PNG
-                    </button>
-
-                    {/* URL共有 */}
-                    <button
-                        onClick={() => {
-                            if (currentLayout) {
-                                const shareURL = exportToURL(currentLayout);
-                                navigator.clipboard
-                                    .writeText(shareURL)
-                                    .then(() => {
-                                        alert("共有URLをクリップボードにコピーしました！");
-                                    })
-                                    .catch(() => {
-                                        alert(`共有URL: ${shareURL}`);
-                                    });
-                            }
-                        }}
+                        onClick={openExportModal}
                         className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
                     >
-                        � 共有
+                        � 共有・エクスポート
                     </button>
                 </div>
             </div>
+
+            {/* エクスポートモーダル */}
+            <ExportModal isOpen={isExportModalOpen} onClose={closeExportModal} />
 
             {/* ヘルプ */}
             <div className="mt-4 p-3 bg-gray-700/50 rounded-md">

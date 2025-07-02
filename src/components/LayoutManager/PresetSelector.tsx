@@ -1,6 +1,7 @@
 import React from "react";
 import { useKeyboardStore } from "../../stores/keyboardStore";
 import { jisFullLayout } from "../../data/presets/jisFull";
+import { jisCompactLayout } from "../../data/presets/jisCompact";
 import { usLayout } from "../../data/presets/us";
 
 const PresetSelector: React.FC = () => {
@@ -9,15 +10,21 @@ const PresetSelector: React.FC = () => {
     const presets = [
         {
             id: "jis-full",
-            name: "JIS フル配列 (79キー)",
+            name: jisFullLayout.name,
             layout: jisFullLayout,
-            description: "Fキー付き日本語フルサイズキーボード配列",
+            description: jisFullLayout.description,
+        },
+        {
+            id: "jis-compact",
+            name: jisCompactLayout.name,
+            layout: jisCompactLayout,
+            description: jisCompactLayout.description,
         },
         {
             id: "us",
-            name: "US配列 (104キー)",
+            name: usLayout.name,
             layout: usLayout,
-            description: "アメリカ英語キーボード配列",
+            description: usLayout.description,
         },
     ];
 

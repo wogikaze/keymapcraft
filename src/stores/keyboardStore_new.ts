@@ -11,16 +11,7 @@ interface KeyboardState {
     currentLayer: LayerType;
     isDragging: boolean;
     draggedKeyId: string | null;
-    dragPreviewPosition: { x: number; y: number } | null;
     isDirectInputEnabled: boolean;
-
-    // Export modal state
-    isExportModalOpen: boolean;
-    exportSettings: {
-        fileName: string;
-        layoutName: string;
-        layoutDescription: string;
-    };
 
     // Actions
     setCurrentLayout: (layout: KeyboardLayout) => void;
@@ -31,16 +22,10 @@ interface KeyboardState {
     updateKeyPosition: (keyId: string, position: { x: number; y: number }) => void;
     updateKeySize: (keyId: string, size: { width: number; height: number }) => void;
     setDragging: (isDragging: boolean, keyId?: string) => void;
-    setDragPreviewPosition: (position: { x: number; y: number } | null) => void;
     duplicateKey: (keyId: string) => void;
     deleteKey: (keyId: string) => void;
     setDirectInputEnabled: (enabled: boolean) => void;
     handleDirectInput: (key: string, shiftKey: boolean) => void;
-
-    // Export modal actions
-    openExportModal: () => void;
-    closeExportModal: () => void;
-    updateExportSettings: (settings: Partial<KeyboardState['exportSettings']>) => void;
 }
 
 export const useKeyboardStore = create<KeyboardState>((set, get) => ({
@@ -50,16 +35,7 @@ export const useKeyboardStore = create<KeyboardState>((set, get) => ({
     currentLayer: 'normal' as LayerType,
     isDragging: false,
     draggedKeyId: null,
-    dragPreviewPosition: null,
     isDirectInputEnabled: true,
-
-    // Export modal state
-    isExportModalOpen: false,
-    exportSettings: {
-        fileName: '',
-        layoutName: '',
-        layoutDescription: '',
-    },
 
     setCurrentLayout: (layout) => set({ currentLayout: layout }),
 
@@ -153,11 +129,8 @@ export const useKeyboardStore = create<KeyboardState>((set, get) => ({
 
     setDragging: (isDragging, keyId) => set({
         isDragging,
-        draggedKeyId: keyId || null,
-        dragPreviewPosition: null
+        draggedKeyId: keyId || null
     }),
-
-    setDragPreviewPosition: (position) => set({ dragPreviewPosition: position }),
 
     duplicateKey: (keyId) => set((state) => {
         if (!state.currentLayout) return state;
@@ -203,23 +176,4 @@ export const useKeyboardStore = create<KeyboardState>((set, get) => ({
             selectedKeyId: state.selectedKeyId === keyId ? null : state.selectedKeyId,
         };
     }),
-
-    // Export modal actions
-    openExportModal: () => set((state) => {
-        const currentLayout = state.currentLayout;
-        return {
-            isExportModalOpen: true,
-            exportSettings: {
-                fileName: currentLayout?.name || 'keyboard-layout',
-                layoutName: currentLayout?.name || '',
-                layoutDescription: currentLayout?.description || '',
-            }
-        };
-    }),
-
-    closeExportModal: () => set({ isExportModalOpen: false }),
-
-    updateExportSettings: (settings) => set((state) => ({
-        exportSettings: { ...state.exportSettings, ...settings }
-    })),
 }));
