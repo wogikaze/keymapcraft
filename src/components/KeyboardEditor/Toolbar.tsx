@@ -7,8 +7,12 @@ const Toolbar: React.FC = () => {
         currentLayer,
         setCurrentLayer,
         selectedKeyId,
+        selectedKeyIds,
         duplicateKey,
         deleteKey,
+        deleteSelectedKeys,
+        duplicateSelectedKeys,
+        clearSelection,
         currentLayout,
         setCurrentLayout,
         isExportModalOpen,
@@ -106,6 +110,37 @@ const Toolbar: React.FC = () => {
                                 className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
                             >
                                 🗑️ 削除
+                            </button>
+                        </>
+                    )}
+
+                    {/* 複数選択時の一括操作 */}
+                    {selectedKeyIds.length > 1 && (
+                        <>
+                            <div className="border-l border-gray-600 mx-1"></div>
+                            <span className="text-sm text-gray-400 px-2 py-2">
+                                {selectedKeyIds.length} 個選択中
+                            </span>
+
+                            <button
+                                onClick={duplicateSelectedKeys}
+                                className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
+                            >
+                                📋 一括複製
+                            </button>
+
+                            <button
+                                onClick={deleteSelectedKeys}
+                                className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
+                            >
+                                🗑️ 一括削除
+                            </button>
+
+                            <button
+                                onClick={clearSelection}
+                                className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm font-medium transition-colors duration-200"
+                            >
+                                ❌ 選択解除
                             </button>
                         </>
                     )}

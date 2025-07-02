@@ -7,12 +7,22 @@ type LayerType = 'normal' | 'shift' | 'fn' | 'altgr';
 interface KeyboardState {
     currentLayout: KeyboardLayout | null;
     selectedKeyId: string | null;
+    selectedKeyIds: string[]; // 複数選択用
     isEditing: boolean;
     currentLayer: LayerType;
     isDragging: boolean;
     draggedKeyId: string | null;
     dragPreviewPosition: { x: number; y: number } | null;
     isDirectInputEnabled: boolean;
+
+    // Rectangle selection state
+    isRectangleSelecting: boolean;
+    rectangleSelection: {
+        startX: number;
+        startY: number;
+        endX: number;
+        endY: number;
+    } | null;
 
     // Resize state
     isResizing: boolean;
@@ -30,6 +40,10 @@ interface KeyboardState {
     // Actions
     setCurrentLayout: (layout: KeyboardLayout) => void;
     selectKey: (keyId: string | null) => void;
+    selectMultipleKeys: (keyIds: string[]) => void;
+    addToSelection: (keyId: string) => void;
+    removeFromSelection: (keyId: string) => void;
+    clearSelection: () => void;
     setEditing: (editing: boolean) => void;
     setCurrentLayer: (layer: LayerType) => void;
     updateKeyLegend: (keyId: string, legendType: keyof KeyDefinition['legends'], value: string) => void;
@@ -38,11 +52,19 @@ interface KeyboardState {
     setDragging: (isDragging: boolean, keyId?: string) => void;
     setDragPreviewPosition: (position: { x: number; y: number } | null) => void;
 
+    // Rectangle selection actions
+    startRectangleSelection: (x: number, y: number) => void;
+    updateRectangleSelection: (x: number, y: number) => void;
+    endRectangleSelection: () => void;
+
     // Resize actions
     setResizing: (isResizing: boolean, keyId?: string, direction?: 'right' | 'bottom' | 'corner') => void;
 
     duplicateKey: (keyId: string) => void;
     deleteKey: (keyId: string) => void;
+    deleteSelectedKeys: () => void; // 複数削除
+    duplicateSelectedKeys: () => void; // 複数複製
+    moveSelectedKeys: (deltaX: number, deltaY: number) => void; // 複数移動
     setDirectInputEnabled: (enabled: boolean) => void;
     handleDirectInput: (key: string, shiftKey: boolean) => void;
 
@@ -55,12 +77,17 @@ interface KeyboardState {
 export const useKeyboardStore = create<KeyboardState>((set, get) => ({
     currentLayout: jisFullLayout,
     selectedKeyId: null,
+    selectedKeyIds: [],
     isEditing: false,
     currentLayer: 'normal' as LayerType,
     isDragging: false,
     draggedKeyId: null,
     dragPreviewPosition: null,
     isDirectInputEnabled: true,
+
+    // Rectangle selection state
+    isRectangleSelecting: false,
+    rectangleSelection: null,
 
     // Resize state
     isResizing: false,
@@ -77,7 +104,39 @@ export const useKeyboardStore = create<KeyboardState>((set, get) => ({
 
     setCurrentLayout: (layout) => set({ currentLayout: layout }),
 
-    selectKey: (keyId) => set({ selectedKeyId: keyId }),
+    selectKey: (keyId) => set({
+        selectedKeyId: keyId,
+        selectedKeyIds: keyId ? [keyId] : []
+    }),
+
+    selectMultipleKeys: (keyIds) => set({
+        selectedKeyIds: keyIds,
+        selectedKeyId: keyIds.length === 1 ? keyIds[0] : null
+    }),
+
+    addToSelection: (keyId) => set((state) => {
+        const newSelection = [...state.selectedKeyIds];
+        if (!newSelection.includes(keyId)) {
+            newSelection.push(keyId);
+        }
+        return {
+            selectedKeyIds: newSelection,
+            selectedKeyId: newSelection.length === 1 ? newSelection[0] : null
+        };
+    }),
+
+    removeFromSelection: (keyId) => set((state) => {
+        const newSelection = state.selectedKeyIds.filter(id => id !== keyId);
+        return {
+            selectedKeyIds: newSelection,
+            selectedKeyId: newSelection.length === 1 ? newSelection[0] : null
+        };
+    }),
+
+    clearSelection: () => set({
+        selectedKeyIds: [],
+        selectedKeyId: null
+    }),
 
     setEditing: (editing) => set({ isEditing: editing }),
 
@@ -242,4 +301,130 @@ export const useKeyboardStore = create<KeyboardState>((set, get) => ({
     updateExportSettings: (settings) => set((state) => ({
         exportSettings: { ...state.exportSettings, ...settings }
     })),
+
+    // Rectangle selection actions
+    startRectangleSelection: (x, y) => set({
+        isRectangleSelecting: true,
+        rectangleSelection: {
+            startX: x,
+            startY: y,
+            endX: x,
+            endY: y,
+        }
+    }),
+
+    updateRectangleSelection: (x, y) => set((state) => ({
+        rectangleSelection: state.rectangleSelection ? {
+            ...state.rectangleSelection,
+            endX: x,
+            endY: y,
+        } : null
+    })),
+
+    endRectangleSelection: () => set((state) => {
+        if (!state.rectangleSelection || !state.currentLayout) {
+            return { isRectangleSelecting: false, rectangleSelection: null };
+        }
+
+        const { startX, startY, endX, endY } = state.rectangleSelection;
+        const minX = Math.min(startX, endX);
+        const maxX = Math.max(startX, endX);
+        const minY = Math.min(startY, endY);
+        const maxY = Math.max(startY, endY);
+
+        // 矩形内のキーを選択
+        const selectedKeys = state.currentLayout.keys.filter(key => {
+            const keyLeft = key.position.x * 50; // 1u = 50px (表示サイズに合わせる)
+            const keyTop = key.position.y * 50;
+            const keyRight = keyLeft + (key.size.width * 50);
+            const keyBottom = keyTop + (key.size.height * 50);
+
+            return keyLeft < maxX && keyRight > minX && keyTop < maxY && keyBottom > minY;
+        });
+
+        const selectedKeyIds = selectedKeys.map(key => key.id);
+
+        return {
+            isRectangleSelecting: false,
+            rectangleSelection: null,
+            selectedKeyIds: selectedKeyIds,
+            selectedKeyId: selectedKeyIds.length === 1 ? selectedKeyIds[0] : null
+        };
+    }),
+
+    // Bulk operations
+    deleteSelectedKeys: () => set((state) => {
+        if (!state.currentLayout || state.selectedKeyIds.length === 0) return state;
+
+        const updatedKeys = state.currentLayout.keys.filter(
+            key => !state.selectedKeyIds.includes(key.id)
+        );
+
+        const newLayout = {
+            ...state.currentLayout,
+            keys: updatedKeys,
+            updatedAt: new Date().toISOString(),
+        };
+
+        return {
+            currentLayout: newLayout,
+            selectedKeyIds: [],
+            selectedKeyId: null,
+        };
+    }),
+
+    duplicateSelectedKeys: () => set((state) => {
+        if (!state.currentLayout || state.selectedKeyIds.length === 0) return state;
+
+        const keysToDuplicate = state.currentLayout.keys.filter(
+            key => state.selectedKeyIds.includes(key.id)
+        );
+
+        const duplicatedKeys = keysToDuplicate.map(key => ({
+            ...key,
+            id: `${key.id}-copy-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            position: {
+                x: key.position.x + 1, // 1u右にオフセット
+                y: key.position.y + 1, // 1u下にオフセット
+            },
+        }));
+
+        const newLayout = {
+            ...state.currentLayout,
+            keys: [...state.currentLayout.keys, ...duplicatedKeys],
+            updatedAt: new Date().toISOString(),
+        };
+
+        const newSelectedIds = duplicatedKeys.map(key => key.id);
+
+        return {
+            currentLayout: newLayout,
+            selectedKeyIds: newSelectedIds,
+            selectedKeyId: newSelectedIds.length === 1 ? newSelectedIds[0] : null,
+        };
+    }),
+
+    moveSelectedKeys: (deltaX, deltaY) => set((state) => {
+        if (!state.currentLayout || state.selectedKeyIds.length === 0) return state;
+
+        const updatedKeys = state.currentLayout.keys.map(key =>
+            state.selectedKeyIds.includes(key.id)
+                ? {
+                    ...key,
+                    position: {
+                        x: Math.max(0, key.position.x + deltaX),
+                        y: Math.max(0, key.position.y + deltaY),
+                    }
+                }
+                : key
+        );
+
+        const newLayout = {
+            ...state.currentLayout,
+            keys: updatedKeys,
+            updatedAt: new Date().toISOString(),
+        };
+
+        return { currentLayout: newLayout };
+    }),
 }));

@@ -11,16 +11,20 @@ interface KeyComponentProps {
 const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
     const {
         selectedKeyId,
+        selectedKeyIds,
         selectKey,
+        addToSelection,
+        removeFromSelection,
         currentLayer,
         updateKeyPosition,
         updateKeySize,
         setDragging,
         setResizing,
         isResizing,
-        resizingKeyId,
+        resizingKeyId 
     } = useKeyboardStore();
     const isSelected = selectedKeyId === keyDef.id;
+    const isMultiSelected = selectedKeyIds.includes(keyDef.id);
 
     // ドラッグ機能（リサイズ中は無効化）
     const [{ isDragging }, drag] = useDrag(
@@ -29,7 +33,20 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
             canDrag: () => !isResizing && resizingKeyId !== keyDef.id,
             item: () => {
                 setDragging(true, keyDef.id);
-                return { id: keyDef.id, originalPosition: keyDef.position };
+                // 複数選択されている場合は、選択されたすべてのキーの情報を含める
+                if (selectedKeyIds.length > 1 && isMultiSelected) {
+                    return {
+                        id: keyDef.id,
+                        originalPosition: keyDef.position,
+                        isMultipleSelection: true,
+                        selectedKeyIds: selectedKeyIds,
+                    };
+                }
+                return {
+                    id: keyDef.id,
+                    originalPosition: keyDef.position,
+                    isMultipleSelection: false,
+                };
             },
             collect: (monitor) => ({
                 isDragging: monitor.isDragging(),
@@ -38,11 +55,24 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
                 setDragging(false);
                 if (!monitor.didDrop()) {
                     // ドロップされなかった場合は元の位置に戻す
+                    if (item.isMultipleSelection) {
+                        // 複数選択の場合は元の位置には戻さない（複雑になるため）
+                        return;
+                    }
                     updateKeyPosition(keyDef.id, item.originalPosition);
                 }
             },
         }),
-        [keyDef.id, keyDef.position, setDragging, updateKeyPosition, isResizing, resizingKeyId]
+        [
+            keyDef.id,
+            keyDef.position,
+            setDragging,
+            updateKeyPosition,
+            isResizing,
+            resizingKeyId,
+            selectedKeyIds,
+            isMultiSelected,
+        ]
     );
 
     // アニメーション
@@ -55,7 +85,18 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
 
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        selectKey(keyDef.id);
+
+        if (e.ctrlKey || e.metaKey) {
+            // Ctrl+クリックで複数選択のトグル
+            if (isMultiSelected) {
+                removeFromSelection(keyDef.id);
+            } else {
+                addToSelection(keyDef.id);
+            }
+        } else {
+            // 通常のクリック
+            selectKey(keyDef.id);
+        }
     };
 
     // リサイズハンドルのマウスダウンイベント
@@ -128,21 +169,28 @@ const KeyComponent: React.FC<KeyComponentProps> = ({ keyDef }) => {
 
     // レイヤーごとの色を取得
     const getLayerColor = () => {
+        // 選択状態を判定（単一選択または複数選択）
+        const isAnySelected = isSelected || isMultiSelected;
+
         switch (currentLayer) {
             case "shift":
-                return isSelected
+                return isAnySelected
                     ? "border-yellow-400 bg-yellow-900/50"
                     : "border-yellow-600 bg-yellow-800/30 hover:bg-yellow-700/50";
             case "fn":
-                return isSelected
+                return isAnySelected
                     ? "border-green-400 bg-green-900/50"
                     : "border-green-600 bg-green-800/30 hover:bg-green-700/50";
             case "altgr":
-                return isSelected
+                return isAnySelected
                     ? "border-purple-400 bg-purple-900/50"
                     : "border-purple-600 bg-purple-800/30 hover:bg-purple-700/50";
             default:
-                return isSelected
+                if (isMultiSelected && !isSelected) {
+                    // 複数選択されているが、単一選択されていない場合（セカンダリ選択）
+                    return "border-blue-300 bg-blue-800/30";
+                }
+                return isAnySelected
                     ? "border-blue-400 bg-blue-900/50"
                     : "border-gray-600 bg-gray-800 hover:bg-gray-700 hover:border-gray-500";
         }
